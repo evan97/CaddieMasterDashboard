@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caddie Scheduler Pro+</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1> Caddie Scheduler Pro+ <span class="prototype-badge">Prototype</span></h1>
+        <p>Current Time: <strong id="current-time"></strong></p>
+    </header>
+
+    <main>
+        <section id="tee-time-module" class="card">
+            <div class="card-header">
+                <h2>🎯 Tee Time Schedule</h2>
+                <div class="filters">
+                    <label for="date-filter">Date:</label>
+                    <select id="date-filter">
+                        <option value="all">All Dates</option>
+                        <option value="today">Today</option>
+                        <option value="tomorrow">Tomorrow</option>
+                        </select>
+                    <label for="assignment-filter">Assignment:</label>
+                    <select id="assignment-filter">
+                        <option value="all">All</option>
+                        <option value="unassigned">Unassigned Only</option>
+                        <option value="assigned">Assigned Only</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="tee-times-table">
+                    <thead>
+                        <tr>
+                            <th>Date 🗓️</th>
+                            <th>Time 🕒</th>
+                            <th>Player / Group 👤</th>
+                            <th>Type</th>
+                            <th>Assigned Caddie</th>
+                            <th>Status/Warnings ⚠️</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tee-times-body">
+                        </tbody>
+                </table>
+            </div>
+             <button id="add-dummy-tee-time" style="margin-top: 15px;">+ Add Dummy Tee Time</button>
+        </section>
+
+        <section id="caddie-roster-module" class="card">
+             <div class="card-header">
+                 <h2>📘 Caddie Roster</h2>
+                  <div class="filters">
+                       <label for="caddie-status-filter">Status:</label>
+                       <select id="caddie-status-filter">
+                           <option value="all">All Caddies</option>
+                           <option value="Active">Active Only</option>
+                           <option value="Inactive">Inactive Only</option>
+                       </select>
+                  </div>
+             </div>
+              <div class="table-container">
+                <table id="caddie-roster-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Assigned Today?</th>
+                            <th>Last Assignment</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="caddie-roster-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <dialog id="edit-modal">
+        <form method="dialog">
+            <h3 id="modal-title">Edit Item</h3>
+            <div id="modal-content">
+                <p>Editing fields would go here...</p>
+                <label for="modal-field1">Field 1:</label>
+                <input type="text" id="modal-field1" name="field1"><br>
+                 <label for="modal-field2">Field 2:</label>
+                <input type="text" id="modal-field2" name="field2">
+            </div>
+            <menu>
+                <button value="cancel">Cancel</button>
+                <button id="confirmBtn" value="default">Confirm</button>
+            </menu>
+        </form>
+    </dialog>
+
+    <script src="script.js"></script>
+</body>
+</html>

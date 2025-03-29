@@ -32,9 +32,9 @@ body {
 }
 
 header {
-    background-color: var(--accent-color);
+    background: linear-gradient(135deg, var(--accent-color), #0056b3);
     color: white;
-    padding: 1rem 2rem;
+    padding: 1.2rem 2rem;
     margin-bottom: 2rem;
     box-shadow: var(--box-shadow);
 }
@@ -69,9 +69,14 @@ main {
 .card {
     background-color: var(--card-bg);
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     margin-bottom: 2rem;
-    overflow: hidden; /* Keep content contained */
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
 .card-header {
@@ -94,6 +99,13 @@ main {
     display: flex;
     gap: 1rem; /* Space between filter elements */
     align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .filters label {
@@ -108,6 +120,7 @@ main {
     border-radius: var(--border-radius);
     font-size: 0.9rem;
     background-color: white;
+    min-width: 140px;
 }
 
 /* --- Tables --- */
@@ -119,24 +132,47 @@ main {
 
 table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 0; /* Removed top margin as padding is on container */
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 0;
+    border-radius: var(--border-radius);
+    overflow: hidden;
 }
 
 th, td {
-    border: 1px solid var(--table-border-color);
-    padding: 0.75rem 1rem; /* Increased padding */
+    padding: 0.85rem 1rem;
+    border: none;
+    border-bottom: 1px solid var(--table-border-color);
     text-align: left;
     vertical-align: middle; /* Align vertically centered */
     font-size: 0.9rem; /* Slightly smaller table text */
 }
 
 thead th {
-    background-color: var(--table-header-bg);
-    font-weight: 600; /* Bolder headers */
-    position: sticky; /* Make headers sticky */
-    top: 0; /* Stick to the top of the scrollable container */
-    z-index: 1; /* Ensure header is above rows */
+    background-color: #e9ecef;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+}
+
+thead th:first-child {
+    border-top-left-radius: var(--border-radius);
+}
+
+thead th:last-child {
+    border-top-right-radius: var(--border-radius);
+}
+
+tr:last-child td:first-child {
+    border-bottom-left-radius: var(--border-radius);
+}
+
+tr:last-child td:last-child {
+    border-bottom-right-radius: var(--border-radius);
 }
 
 tbody tr:nth-child(odd) {
@@ -144,20 +180,22 @@ tbody tr:nth-child(odd) {
 }
 
 tbody tr:hover {
-    background-color: #e9ecef; /* Hover effect */
+    background-color: rgba(0, 123, 255, 0.05);
 }
 
 /* --- Status Badges/Indicators --- */
 .badge {
     display: inline-block;
-    padding: 0.3em 0.6em;
-    font-size: 0.8rem;
+    padding: 0.35em 0.65em;
+    font-size: 0.75rem;
     font-weight: 600;
     line-height: 1;
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: var(--border-radius);
+    border-radius: 50rem;
+    margin-right: 0.25rem;
+    letter-spacing: 0.03em;
 }
 
 .badge-warning { color: var(--text-color); background-color: var(--warning-color); }
@@ -201,13 +239,15 @@ button, .button { /* Added .button class for non-button elements styled like but
     background-color: var(--card-bg);
     color: var(--text-color);
     font-size: 0.9rem;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition: all 0.2s ease;
     margin-right: 5px;
     vertical-align: middle; /* Align with text/icons */
+    font-weight: 500;
 }
 button:not(:disabled):hover, .button:hover {
-    background-color: #e9ecef;
-    border-color: #adb5bd;
+    background-color: #f1f3f5;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 button:disabled {
     cursor: not-allowed;
@@ -220,8 +260,8 @@ button.primary, .button.primary {
     color: white;
 }
 button.primary:not(:disabled):hover, .button.primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: #0069d9;
+    border-color: #0062cc;
 }
 
 button.danger, .button.danger {
@@ -230,8 +270,8 @@ button.danger, .button.danger {
     color: white;
 }
 button.danger:not(:disabled):hover, .button.danger:hover {
-    background-color: #a71d2a;
-    border-color: #a71d2a;
+    background-color: #c82333;
+    border-color: #bd2130;
 }
 
 
@@ -251,46 +291,531 @@ button.danger:not(:disabled):hover, .button.danger:hover {
 }
 
 
-/* --- Modal --- */
-dialog {
-    border: 1px solid #ccc;
+/* --- Dashboard Summary Cards --- */
+.dashboard-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.summary-card {
+    background-color: var(--card-bg);
     border-radius: var(--border-radius);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    padding: 0; /* Remove default padding */
-    width: clamp(300px, 50%, 500px); /* Responsive width */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
-dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(2px);
-}
-dialog form {
-    padding: 1.5rem;
-}
-dialog #modal-title {
-    margin: 0 0 1rem;
-    font-size: 1.4rem;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.5rem;
-}
-dialog #modal-content {
-    margin-bottom: 1.5rem;
-}
-dialog label {
-    display: block;
-    margin-bottom: 0.3rem;
+
+.summary-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    color: var(--muted-text-color);
     font-weight: 500;
 }
-dialog input[type="text"] {
-    width: 95%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: var(--border-radius);
-    margin-bottom: 0.8rem;
+
+.summary-card .value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
 }
-dialog menu {
+
+.summary-card.warning .value {
+    color: var(--warning-color);
+}
+
+.summary-card.critical .value {
+    color: var(--critical-color);
+}
+
+.summary-card.success .value {
+    color: var(--success-color);
+}
+
+/* --- Improved Search Box --- */
+.search-box {
+    position: relative;
+    margin-right: 1rem;
+}
+
+.search-box input {
+    padding: 0.5rem 0.5rem 0.5rem 2rem;
+    border: 1px solid var(--table-border-color);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    width: 180px;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    width: 220px;
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.search-box::before {
+    content: "🔍";
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted-text-color);
+    font-size: 0.85rem;
+}
+
+/* --- Status indicator dot --- */
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-dot.active { background-color: var(--success-color); }
+.status-dot.inactive { background-color: var(--inactive-color); }
+.status-dot.warning { background-color: var(--warning-color); }
+.status-dot.critical { background-color: var(--critical-color); }
+
+/* --- Add animation for actions --- */
+.highlight-row {
+    animation: highlight-fade 2s ease-in-out;
+}
+
+@keyframes highlight-fade {
+    0% { background-color: rgba(0, 123, 255, 0.2); }
+    100% { background-color: transparent; }
+}
+
+/* --- Tooltip Styles --- */
+[data-tooltip] {
+    position: relative;
+    cursor: help;
+}
+
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+[data-tooltip]:hover::after {
+    opacity: 1;
+}
+
+/* --- Notification System --- */
+#notification-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.notification {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    animation: slide-in 0.3s ease-out forwards;
+    transform: translateX(100%);
+}
+
+.notification-success {
+    background-color: var(--success-bg);
+    border-left: 4px solid var(--success-color);
+}
+
+.notification-warning {
+    background-color: var(--warning-bg);
+    border-left: 4px solid var(--warning-color);
+}
+
+.notification-error {
+    background-color: var(--critical-bg);
+    border-left: 4px solid var(--critical-color);
+}
+
+.notification-info {
+    background-color: #cff4fc;
+    border-left: 4px solid #0dcaf0;
+}
+
+.notification-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.notification-close {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0.7;
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
+@keyframes slide-in {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-out {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+/* --- Quick Actions Menu --- */
+.quick-actions-menu {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 100;
+}
+
+.quick-actions-toggle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: white;
+    font-size: 24px;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.quick-actions-toggle:hover {
+    background-color: #0056b3;
+}
+
+.quick-actions-toggle.active {
+    transform: rotate(45deg);
+}
+
+.quick-actions-container {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
     display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
+    flex-direction: column-reverse;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.quick-actions-container.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.quick-action {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: white;
+    color: var(--text-color);
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.quick-action:hover {
+    transform: scale(1.1);
+    background-color: #f8f9fa;
+}
+
+/* --- Improved Modal Styles --- */
+dialog {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    padding: 0;
+    width: clamp(300px, 80%, 600px);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+.modal-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #eee;
+    background-color: #f8f9fa;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#modal-title {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--text-color);
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--muted-text-color);
+    transition: color 0.2s ease;
     padding: 0;
     margin: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-button:hover {
+    color: var(--critical-color);
+    background-color: rgba(0,0,0,0.05);
+}
+
+.modal-content {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+}
+
+.modal-button {
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    border: 1px solid var(--muted-text-color);
+    border-radius: var(--border-radius);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.modal-button:hover {
+    background-color: #e9ecef;
+}
+
+.modal-button.primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+}
+
+.modal-button.primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* --- Form Styling --- */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ced4da;
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.form-help {
+    font-size: 0.85rem;
+    color: var(--muted-text-color);
+    margin-top: 0.3rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* --- Mobile responsiveness improvements --- */
+@media (max-width: 768px) {
+    /* Header adjustments */
+    header {
+        padding: 1rem;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    /* Main content padding */
+    main {
+        padding: 0 1rem;
+    }
+    
+    /* Card header layout */
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+    
+    .card-header .filters {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .filters select, .filters input, .search-box input {
+        width: 100%;
+    }
+    
+    /* Table improvements for small screens */
+    .table-container {
+        padding: 0 0.5rem 1rem;
+    }
+    
+    /* Make tables scroll horizontally on small screens */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Add priority indicators to help with responsive tables */
+    .data-priority-high {
+        /* These columns should remain visible */
+        position: sticky;
+        left: 0;
+        background-color: var(--card-bg);
+        z-index: 1;
+    }
+    
+    /* Smaller buttons on mobile */
+    button, .button {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Stack action buttons on small screens */
+    .action-area {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+    
+    /* Improve form fields in modals */
+    dialog {
+        width: 90%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    dialog input[type="text"],
+    dialog input[type="date"],
+    dialog input[type="time"],
+    dialog select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Make dropdown menus full width on mobile */
+    .action-area select {
+        max-width: 100%;
+    }
+
+    /* Form row goes to column on mobile */
+    .form-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    /* Dashboard summary becomes single column */
+    .dashboard-summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Additional touch-friendly targets for mobile */
+@media (max-width: 768px) {
+    th, td {
+        padding: 0.8rem 0.6rem;
+    }
+    
+    .badge {
+        padding: 0.4em 0.6em;
+    }
+    
+    /* Add a class for tap-targets that need to be larger */
+    .tap-target {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }

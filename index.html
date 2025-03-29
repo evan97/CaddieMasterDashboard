@@ -7,29 +7,64 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Notification Container -->
+    <div id="notification-container">
+        <!-- Notifications will be dynamically inserted here -->
+    </div>
 
     <header>
         <h1> Caddie Scheduler Pro+ <span class="prototype-badge">Prototype</span></h1>
         <p>Current Time: <strong id="current-time"></strong></p>
     </header>
 
+    <!-- Dashboard Summary -->
+    <section class="dashboard-summary">
+        <div class="summary-card warning">
+            <h3>Upcoming Tee Times</h3>
+            <div class="value" id="upcoming-count">0</div>
+            <p>Next 24 hours</p>
+        </div>
+        <div class="summary-card critical">
+            <h3>Unassigned</h3>
+            <div class="value" id="unassigned-count">0</div>
+            <p>Need assignment</p>
+        </div>
+        <div class="summary-card success">
+            <h3>Active Caddies</h3>
+            <div class="value" id="active-caddies-count">0</div>
+            <p>Available today</p>
+        </div>
+        <div class="summary-card">
+            <h3>Forecasted Need</h3>
+            <div class="value" id="forecast-need">0</div>
+            <p>Tomorrow's demand</p>
+        </div>
+    </section>
+
     <main>
         <section id="tee-time-module" class="card">
             <div class="card-header">
                 <h2>🎯 Tee Time Schedule</h2>
                 <div class="filters">
-                    <label for="date-filter">Date:</label>
-                    <select id="date-filter">
-                        <option value="all">All Dates</option>
-                        <option value="today">Today</option>
-                        <option value="tomorrow">Tomorrow</option>
+                    <div class="search-box">
+                        <input type="text" id="tee-time-search" placeholder="Search players...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="date-filter">Date:</label>
+                        <select id="date-filter">
+                            <option value="all">All Dates</option>
+                            <option value="today">Today</option>
+                            <option value="tomorrow">Tomorrow</option>
                         </select>
-                    <label for="assignment-filter">Assignment:</label>
-                    <select id="assignment-filter">
-                        <option value="all">All</option>
-                        <option value="unassigned">Unassigned Only</option>
-                        <option value="assigned">Assigned Only</option>
-                    </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="assignment-filter">Assignment:</label>
+                        <select id="assignment-filter">
+                            <option value="all">All</option>
+                            <option value="unassigned">Unassigned Only</option>
+                            <option value="assigned">Assigned Only</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="table-container">
@@ -46,7 +81,8 @@
                         </tr>
                     </thead>
                     <tbody id="tee-times-body">
-                        </tbody>
+                        <!-- Table content will be dynamically generated -->
+                    </tbody>
                 </table>
             </div>
              <button id="add-dummy-tee-time" style="margin-top: 15px;">+ Add Dummy Tee Time</button>
@@ -56,12 +92,17 @@
              <div class="card-header">
                  <h2>📘 Caddie Roster</h2>
                   <div class="filters">
-                       <label for="caddie-status-filter">Status:</label>
-                       <select id="caddie-status-filter">
-                           <option value="all">All Caddies</option>
-                           <option value="Active">Active Only</option>
-                           <option value="Inactive">Inactive Only</option>
-                       </select>
+                      <div class="search-box">
+                          <input type="text" id="caddie-search" placeholder="Search caddies...">
+                      </div>
+                       <div class="filter-group">
+                           <label for="caddie-status-filter">Status:</label>
+                           <select id="caddie-status-filter">
+                               <option value="all">All Caddies</option>
+                               <option value="Active">Active Only</option>
+                               <option value="Inactive">Inactive Only</option>
+                           </select>
+                       </div>
                   </div>
              </div>
               <div class="table-container">
@@ -76,28 +117,40 @@
                         </tr>
                     </thead>
                     <tbody id="caddie-roster-body">
-                        </tbody>
+                        <!-- Table content will be dynamically generated -->
+                    </tbody>
                 </table>
             </div>
         </section>
     </main>
 
+    <!-- Improved Edit Modal -->
     <dialog id="edit-modal">
         <form method="dialog">
-            <h3 id="modal-title">Edit Item</h3>
-            <div id="modal-content">
-                <p>Editing fields would go here...</p>
-                <label for="modal-field1">Field 1:</label>
-                <input type="text" id="modal-field1" name="field1"><br>
-                 <label for="modal-field2">Field 2:</label>
-                <input type="text" id="modal-field2" name="field2">
+            <div class="modal-header">
+                <h3 id="modal-title">Edit Item</h3>
+                <button type="button" class="close-button" id="modal-close-btn">&times;</button>
             </div>
-            <menu>
-                <button value="cancel">Cancel</button>
-                <button id="confirmBtn" value="default">Confirm</button>
-            </menu>
+            <div id="modal-content" class="modal-content">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button value="cancel" class="modal-button">Cancel</button>
+                <button id="confirmBtn" value="default" class="modal-button primary">Confirm</button>
+            </div>
         </form>
     </dialog>
+
+    <!-- Quick Actions Menu -->
+    <div class="quick-actions-menu">
+        <button id="quick-actions-toggle" class="quick-actions-toggle">+</button>
+        <div class="quick-actions-container">
+            <button id="quick-auto-assign" class="quick-action" title="Auto-Assign All">🤖</button>
+            <button id="quick-add-tee-time" class="quick-action" title="Add Tee Time">➕</button>
+            <button id="quick-export" class="quick-action" title="Export Data">💾</button>
+            <button id="quick-refresh" class="quick-action" title="Refresh View">🔄</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
